@@ -1,4 +1,5 @@
-FROM debian:bookworm-slim
+#FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -34,9 +35,10 @@ RUN chmod +x \
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-ENV VPN_ADDR=""
-ENV VPN_USER=""
-ENV VPN_PASS=""
+#ENV VPN_ADDR=""
+#ENV VPN_USER=""
+#ENV VPN_PASS=""
+ENV VPN_ARGS=""
 ENV VPN_TIMEOUT=""
 ENV VPN_2FA_DIR=""
 ENV VPN_2FA_FILE=""

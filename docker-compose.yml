@@ -1,12 +1,14 @@
 version: "2.3"
 services:
   vpn:
-    image: poyaz/forticlient:latest
+    image: forticlient
+    #image: poyaz/forticlient:latest
     network_mode: bridge
     devices:
       - /dev/net/tun:/dev/net/tun
       - /dev/ppp:/dev/ppp
     volumes:
+      - ./env/vpn:/tmp/config
       - ./storage/docker/2fa:/tmp/2fa
     cap_add:
       - NET_ADMIN
@@ -19,7 +21,9 @@ services:
       - 1080
       - 1081
       - 1082
-    restart: "always"
+    # restart: "always"
+    environment:
+      VPN_DEBUG: "1"
     logging:
       driver: ${VPN_LOG_DRIVER:-json-file}
       options:

@@ -24,9 +24,9 @@ file_env() {
 }
 
 function docker_setup_env() {
-  # file_env 'VPN_ADDR'
-  # file_env 'VPN_USER'
-  # file_env 'VPN_PASS'
+  file_env 'VPN_ADDR'
+  file_env 'VPN_USER'
+  file_env 'VPN_PASS'
   file_env 'VPN_TIMEOUT' 30
   file_env 'VPN_2FA_DIR' '/tmp/2fa/'
   file_env 'VPN_2FA_FILE' '/tmp/2fa/2fa.txt'
@@ -34,10 +34,10 @@ function docker_setup_env() {
 }
 
 check_require_variable_set() {
-  # if [ -z "$VPN_ADDR" -o -z "$VPN_USER" -o -z "$VPN_PASS" ]; then
-    # echo "Variables VPN_ADDR, VPN_USER and VPN_PASS must be set."
-    # exit 1
-  # fi
+  if [ -z "$VPN_ADDR" -o -z "$VPN_USER" -o -z "$VPN_PASS" ]; then
+    echo "Variables VPN_ADDR, VPN_USER and VPN_PASS must be set."
+    exit 1
+  fi
 
   if [ ! -d "$VPN_2FA_DIR" ]; then
     echo "The 2fa directory not exist. Please fill variable VPN_2FA_DIR with valid directory."
@@ -61,14 +61,7 @@ function run() {
 
   while [ true ]; do
     echo "------------ VPN Starts ------------"
-    echo -e "EXEC openfortivpn"
-    if [ "$VPN_DEBUG" = "1" ]; then
-        cat /tmp/config/myconfig.txt
-        env | sort
-        /usr/bin/openfortivpn -c /tmp/config/myconfig.txt -vv --otp-prompt 'my otp:'
-    else
-        /usr/bin/openfortivpn -c /tmp/config/myconfig.txt --otp-prompt 'my otp:'
-    fi
+    /usr/local/bin/forticlient
     echo "------------ VPN exited ------------"
     sleep 10
   done
